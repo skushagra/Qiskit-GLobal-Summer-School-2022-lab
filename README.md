@@ -1,2 +1,5 @@
-# Qiskit-GLobal-Summer-School-2022-lab
-Solutions to Qiskit Global Summer School 2022 Labs
+# Qiskit Global Summer School 2022: Quantum Chemistry and Simulation
+#### Jul 18 2022 — Aug 04 2022
+
+
+The Qiskit Global Summer School 2022 is a two-week intensive summer program designed to empower the quantum researchers and developers of tomorrow with the skills and know-how to explore the world of quantum computing and its applications. This third-annual summer school will provide a focused introduction to quantum computing and its applications to quantum simulation, with a specific focus on quantum chemistry.
