@@ -1,0 +1,1255 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{lab-2}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{lab-2-advanced-circuits}{%
+\section{Lab 2: Advanced Circuits}\label{lab-2-advanced-circuits}}
+
+Welcome to Qiskit! Before starting with the exercises, please run the
+cell below by pressing `shift' + `return'.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{opflow} \PY{k+kn}{import} \PY{n}{I}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{Z}\PY{p}{,} \PY{n}{MatrixEvolution}\PY{p}{,} \PY{n}{PauliTrotterEvolution}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{circuit} \PY{k+kn}{import} \PY{n}{Parameter}
+\PY{k+kn}{from} \PY{n+nn}{qiskit} \PY{k+kn}{import} \PY{n}{QuantumCircuit}
+\PY{k+kn}{from} \PY{n+nn}{qiskit} \PY{k+kn}{import} \PY{n}{Aer}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{compiler} \PY{k+kn}{import} \PY{n}{transpile}
+\PY{k+kn}{import} \PY{n+nn}{qc\PYZus{}grader}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{ii.1-operators-and-qiskit-opflow}{%
+\subsection{II.1: Operators and Qiskit
+Opflow}\label{ii.1-operators-and-qiskit-opflow}}
+
+In this notebook we will learn the fundamentals of Qiskit Opflow module,
+this has advanced features that aim to bridge the gap from quantum
+information theory to experiments. The Qiskit Opflow module will allow
+us to quickly enter the realm of quantum simulation. Quoting the Qiskit
+documentation:
+
+``The Operator Flow is meant to serve as a lingua franca between the
+theory and implementation of Quantum Algorithms \& Applications.
+Meaning, the ultimate goal is that when theorists speak their theory in
+the Operator Flow, they are speaking valid implementation, and when the
+engineers speak their implementation in the Operator Flow, they are
+speaking valid physical formalism.''
+
+\href{https://qiskit.org/documentation/tutorials/operators/01_operator_flow.html}{Here}
+you can find more documentation and examples on the module. To start,
+let's get familiar with how to define operators.
+
+\hypertarget{define-pauli-operators-for-one-qubit}{%
+\subsubsection{1.) Define Pauli operators for one
+qubit}\label{define-pauli-operators-for-one-qubit}}
+
+Define operators for the four pauli matrices: \texttt{X}, \texttt{Y},
+\texttt{Z}, \texttt{I}; and collect them in a list \texttt{pauli\_list}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{48}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Define which will contain the Paulis}
+\PY{n}{pauli\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{n}{X}\PY{p}{,}\PY{n}{Y}\PY{p}{,}\PY{n}{Z}\PY{p}{,}\PY{n}{I}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Define Paulis and add them to the list}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}INSERT CODE BELOW THIS LINE}
+
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}DO NOT EDIT BELOW THIS LINE}
+
+\PY{k}{for} \PY{n}{pauli} \PY{o+ow}{in} \PY{n}{pauli\PYZus{}list}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{pauli}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+X
+
+Y
+
+Z
+
+I
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qc\PYZus{}grader}\PY{n+nn}{.}\PY{n+nn}{challenges}\PY{n+nn}{.}\PY{n+nn}{qgss\PYZus{}2022} \PY{k+kn}{import} \PY{n}{grade\PYZus{}lab2\PYZus{}ex1}
+
+\PY{n}{grade\PYZus{}lab2\PYZus{}ex1}\PY{p}{(}\PY{n}{pauli\PYZus{}list}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Submitting your answer. Please wait{\ldots}
+Congratulations 🎉! Your answer is correct and has been submitted.
+    \end{Verbatim}
+
+    There's a few operations that we can do on operators which are
+implemented in Qiskit Opflow. For example, we can rescale an operator by
+a scalar factor using \texttt{*}, we can compose operators using
+\texttt{@} and we can take the tensor product of operators using
+\texttt{\^{}}. In the following, let us try to use these operations.
+Note that we need to be careful with the operations' precedences as
+python evaluates \texttt{+} before \texttt{\^{}} and that may change the
+intended value of an expression. For example, \texttt{I\^{}X+X\^{}I} is
+actually interpreted as \texttt{I\^{}(X+X)\^{}I=2(I\^{}X\^{}I)}.
+Therefore the use of parenthesis is strongly recommended to avoid these
+types of errors. Also, keep in mind that the imaginary unit i is defined
+as \texttt{1j} in Python.
+
+\hypertarget{define-the-ladder-operator-hatsigma-frac-hatsigma_x-i-hatsigma_y2-and-hatsigma--frachatsigma_x---i-hatsigma_y2}{%
+\subsubsection{\texorpdfstring{2.) Define the ladder operator:
+\(\hat{\sigma}^{+} = \frac{ \hat{\sigma}_x + i \hat{\sigma}_y}{2}\) and
+\(\hat{\sigma}^{-} = \frac{\hat{\sigma}_x - i \hat{\sigma}_y}{2}\)}{2.) Define the ladder operator: \textbackslash hat\{\textbackslash sigma\}\^{}\{+\} = \textbackslash frac\{ \textbackslash hat\{\textbackslash sigma\}\_x + i \textbackslash hat\{\textbackslash sigma\}\_y\}\{2\} and \textbackslash hat\{\textbackslash sigma\}\^{}\{-\} = \textbackslash frac\{\textbackslash hat\{\textbackslash sigma\}\_x - i \textbackslash hat\{\textbackslash sigma\}\_y\}\{2\}}}\label{define-the-ladder-operator-hatsigma-frac-hatsigma_x-i-hatsigma_y2-and-hatsigma--frachatsigma_x---i-hatsigma_y2}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Define list of ladder operators}
+\PY{n}{ladder\PYZus{}operator\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{0.5} \PY{o}{*} \PY{p}{(}\PY{n}{X}\PY{o}{+}\PY{l+m+mi}{1}\PY{n}{j} \PY{o}{*} \PY{n}{Y}\PY{p}{)}\PY{p}{,} \PY{l+m+mf}{0.5} \PY{o}{*} \PY{p}{(}\PY{n}{X}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{n}{j} \PY{o}{*} \PY{n}{Y}\PY{p}{)}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Define ladder operators and add the to the list}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}INSERT CODE BELOW THIS LINE}
+
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}DO NOT EDIT BELOW THIS LINE}
+
+\PY{k}{for} \PY{n}{ladder\PYZus{}operator} \PY{o+ow}{in} \PY{n}{ladder\PYZus{}operator\PYZus{}list}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{ladder\PYZus{}operator}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.5 * X
++ 0.5j * Y
+
+0.5 * X
++ -0.5j * Y
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{51}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qc\PYZus{}grader}\PY{n+nn}{.}\PY{n+nn}{challenges}\PY{n+nn}{.}\PY{n+nn}{qgss\PYZus{}2022} \PY{k+kn}{import} \PY{n}{grade\PYZus{}lab2\PYZus{}ex2}
+
+\PY{n}{grade\PYZus{}lab2\PYZus{}ex2}\PY{p}{(}\PY{n}{ladder\PYZus{}operator\PYZus{}list}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Submitting your answer. Please wait{\ldots}
+Congratulations 🎉! Your answer is correct and has been submitted.
+    \end{Verbatim}
+
+    We can take the operators defined in Qiskit Opflow and translate them
+into other representation. For example the \texttt{to\_matrix()} method
+of an Operator object allows us to retrieve the matrix representation of
+the operator (as a numpy array)
+
+\hypertarget{obtain-the-matrix-representation-of-the-pauli-operators-sigma_x-sigma_y-sigma_z-and-identity}{%
+\subsubsection{\texorpdfstring{3.) Obtain the matrix representation of
+the pauli operators (\texttt{sigma\_X}, \texttt{sigma\_Y},
+\texttt{sigma\_Z} and \texttt{identity}
+)}{3.) Obtain the matrix representation of the pauli operators (sigma\_X, sigma\_Y, sigma\_Z and identity )}}\label{obtain-the-matrix-representation-of-the-pauli-operators-sigma_x-sigma_y-sigma_z-and-identity}}
+
+Please submit the result as a list with the operators ordered as above.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{52}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Define list which will contain the matrices representing the Pauli operators}
+\PY{n}{matrix\PYZus{}sigma\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{n}{X}\PY{o}{.}\PY{n}{to\PYZus{}matrix}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{Y}\PY{o}{.}\PY{n}{to\PYZus{}matrix}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{Z}\PY{o}{.}\PY{n}{to\PYZus{}matrix}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{I}\PY{o}{.}\PY{n}{to\PYZus{}matrix}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Add matrix representation of Paulis to the list}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}INSERT CODE BELOW THIS LINE}
+
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}DO NOT EDIT BELOW THIS LINE}
+
+\PY{k}{for} \PY{n}{matrix\PYZus{}sigma} \PY{o+ow}{in} \PY{n}{matrix\PYZus{}sigma\PYZus{}list}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{matrix\PYZus{}sigma}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[0.+0.j 1.+0.j]
+ [1.+0.j 0.+0.j]]
+
+[[0.+0.j 0.-1.j]
+ [0.+1.j 0.+0.j]]
+
+[[ 1.+0.j  0.+0.j]
+ [ 0.+0.j -1.+0.j]]
+
+[[1.+0.j 0.+0.j]
+ [0.+0.j 1.+0.j]]
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{53}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qc\PYZus{}grader}\PY{n+nn}{.}\PY{n+nn}{challenges}\PY{n+nn}{.}\PY{n+nn}{qgss\PYZus{}2022} \PY{k+kn}{import} \PY{n}{grade\PYZus{}lab2\PYZus{}ex3}
+
+\PY{n}{grade\PYZus{}lab2\PYZus{}ex3}\PY{p}{(}\PY{n}{matrix\PYZus{}sigma\PYZus{}list}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Submitting your answer. Please wait{\ldots}
+Congratulations 🎉! Your answer is correct and has been submitted.
+    \end{Verbatim}
+
+    We can also generate a circuit representation of the operator using the
+\texttt{to\_circuit()} method
+
+\hypertarget{obtain-the-circuit-representation-of-the-pauli-operators-sigma_x-sigma_y-sigma_z-and-identity}{%
+\subsubsection{\texorpdfstring{4.) Obtain the circuit representation of
+the pauli operators (\texttt{sigma\_X}, \texttt{sigma\_Y},
+\texttt{sigma\_Z} and \texttt{identity}
+)}{4.) Obtain the circuit representation of the pauli operators (sigma\_X, sigma\_Y, sigma\_Z and identity )}}\label{obtain-the-circuit-representation-of-the-pauli-operators-sigma_x-sigma_y-sigma_z-and-identity}}
+
+Please submit the result as a list with the operators ordered as above.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{54}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Define a list which will contain the circuit representation of the Paulis}
+\PY{n}{circuit\PYZus{}sigma\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{n}{X}\PY{o}{.}\PY{n}{to\PYZus{}circuit}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{Y}\PY{o}{.}\PY{n}{to\PYZus{}circuit}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{Z}\PY{o}{.}\PY{n}{to\PYZus{}circuit}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{I}\PY{o}{.}\PY{n}{to\PYZus{}circuit}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Add circuits to list}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}INSERT CODE BELOW THIS LINE}
+
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}DO NOT EDIT BELOW THIS LINE}
+
+\PY{k}{for} \PY{n}{circuit} \PY{o+ow}{in} \PY{n}{circuit\PYZus{}sigma\PYZus{}list}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{circuit}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+   ┌───┐
+q: ┤ X ├
+   └───┘
+
+   ┌───┐
+q: ┤ Y ├
+   └───┘
+
+   ┌───┐
+q: ┤ Z ├
+   └───┘
+
+
+q:
+
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{55}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qc\PYZus{}grader}\PY{n+nn}{.}\PY{n+nn}{challenges}\PY{n+nn}{.}\PY{n+nn}{qgss\PYZus{}2022} \PY{k+kn}{import} \PY{n}{grade\PYZus{}lab2\PYZus{}ex4}
+
+\PY{n}{grade\PYZus{}lab2\PYZus{}ex4}\PY{p}{(}\PY{n}{circuit\PYZus{}sigma\PYZus{}list}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Submitting your answer. Please wait{\ldots}
+Congratulations 🎉! Your answer is correct and has been submitted.
+    \end{Verbatim}
+
+    \hypertarget{ii.2-simulating-time-evolution-with-quantum-circuits}{%
+\subsection{II.2: Simulating Time-Evolution with Quantum
+Circuits}\label{ii.2-simulating-time-evolution-with-quantum-circuits}}
+
+Now that we are a little more familiar with the syntax of the Qiskit
+Opflow module we can put this knowledge to use to build the first
+quantum circuit simulating the dynamics (or time-evolution) of a system
+described by a given Hamiltonian. As a first step, let us introduce
+parametrized circuits. Below we'll create a circuit with a parametrized
+rotation with an angle \(\theta\). The goal is not to directly use
+parametrized rotations but to understand how Qiskit's quantum circuit
+can accept parameters whose values will be defined later on. We'll need
+that to create circuits that represent time-evolution operators with a
+parametrized value for the time.
+
+\hypertarget{create-a-circuit-with-a-parametrized-rx-rotation-of-an-angle-theta}{%
+\subsubsection{\texorpdfstring{1.) Create a circuit with a parametrized
+RX rotation of an angle
+\(\theta\)}{1.) Create a circuit with a parametrized RX rotation of an angle \textbackslash theta}}\label{create-a-circuit-with-a-parametrized-rx-rotation-of-an-angle-theta}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{56}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Define a variable theta to be a parameter with name \PYZsq{}theta\PYZsq{}}
+\PY{n}{theta} \PY{o}{=} \PY{n}{Parameter}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{theta}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Set number of qubits to 1}
+\PY{n}{qubits\PYZus{}count} \PY{o}{=} \PY{l+m+mi}{1}
+\PY{c+c1}{\PYZsh{} Initialize a quantum circuit with one qubit}
+\PY{n}{quantum\PYZus{}circuit} \PY{o}{=} \PY{n}{QuantumCircuit}\PY{p}{(}\PY{n}{qubits\PYZus{}count}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Add a parametrized RX rotation on the qubit}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}INSERT CODE BELOW THIS LINE}
+\PY{n}{quantum\PYZus{}circuit}\PY{o}{.}\PY{n}{rx}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}DO NOT EDIT BELOW THIS LINE}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{quantum\PYZus{}circuit}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+   ┌───────────┐
+q: ┤ Rx(theta) ├
+   └───────────┘
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{57}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qc\PYZus{}grader}\PY{n+nn}{.}\PY{n+nn}{challenges}\PY{n+nn}{.}\PY{n+nn}{qgss\PYZus{}2022} \PY{k+kn}{import} \PY{n}{grade\PYZus{}lab2\PYZus{}ex5}
+
+\PY{n}{grade\PYZus{}lab2\PYZus{}ex5}\PY{p}{(}\PY{n}{quantum\PYZus{}circuit}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Submitting your answer. Please wait{\ldots}
+Congratulations 🎉! Your answer is correct and has been submitted.
+    \end{Verbatim}
+
+    This creates a circuit where the parameter of the RX gate is a
+placeholder which is waiting for a value. Once we decide on the value of
+\(\theta\), we can bind it to the circuit using the
+\texttt{bind\_parameters(\{parameter:\ parameter\_value\})} method of
+the \texttt{QuantumCircuit} object.
+
+\hypertarget{bind-numerical-value-of-the-angle-theta}{%
+\subsubsection{\texorpdfstring{2.) Bind numerical value of the angle
+\(\theta\)}{2.) Bind numerical value of the angle \textbackslash theta}}\label{bind-numerical-value-of-the-angle-theta}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{58}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Set the value of the parameter}
+\PY{n}{theta\PYZus{}value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{pi}
+
+\PY{c+c1}{\PYZsh{} Bind the value to the parametrized circuit}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}INSERT CODE BELOW THIS LINE}
+\PY{n}{quantum\PYZus{}circuit}\PY{o}{.}\PY{n}{assign\PYZus{}parameters}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{theta}\PY{p}{:}\PY{n}{theta\PYZus{}value}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}DO NOT EDIT BELOW THIS LINE}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{quantum\PYZus{}circuit}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+   ┌───────┐
+q: ┤ Rx(π) ├
+   └───────┘
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{59}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qc\PYZus{}grader}\PY{n+nn}{.}\PY{n+nn}{challenges}\PY{n+nn}{.}\PY{n+nn}{qgss\PYZus{}2022} \PY{k+kn}{import} \PY{n}{grade\PYZus{}lab2\PYZus{}ex6}
+
+\PY{n}{grade\PYZus{}lab2\PYZus{}ex6}\PY{p}{(}\PY{n}{quantum\PYZus{}circuit}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Submitting your answer. Please wait{\ldots}
+Congratulations 🎉! Your answer is correct and has been submitted.
+    \end{Verbatim}
+
+    Let us start to prepare the building blocks we'll need to calculate the
+time-evolution of a quantum system using a quantum computer. First let's
+define the Hamiltonian of the system to be the Heisenberg Hamiltonian
+for two qubits:
+
+\[ \hat{H} = \frac{1}{2} \left( \hat{I}\otimes \hat{I} +  \hat{\sigma}_x \otimes \hat{\sigma}_x + \hat{\sigma}_y \otimes \hat{\sigma}_y + \hat{\sigma}_z \otimes \hat{\sigma}_z \right) \]
+
+\hypertarget{define-the-heisenberg-hamiltonian-using-qiskit-opflow}{%
+\subsubsection{3.) Define the Heisenberg Hamiltonian using Qiskit
+Opflow}\label{define-the-heisenberg-hamiltonian-using-qiskit-opflow}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{60}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Use the formula above to define the Hamiltonian operator}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}INSERT CODE BELOW THIS LINE}
+
+\PY{n}{H} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{o}{*}\PY{p}{(}\PY{p}{(}\PY{n}{I}\PY{o}{\PYZca{}}\PY{n}{I}\PY{p}{)}\PY{o}{+}\PY{p}{(}\PY{n}{X}\PY{o}{\PYZca{}}\PY{n}{X}\PY{p}{)}\PY{o}{+}\PY{p}{(}\PY{n}{Y}\PY{o}{\PYZca{}}\PY{n}{Y}\PY{p}{)}\PY{o}{+}\PY{p}{(}\PY{n}{Z}\PY{o}{\PYZca{}}\PY{n}{Z}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}DO NOT EDIT BELOW THIS LINE}
+
+\PY{c+c1}{\PYZsh{} Get its matrix representation}
+\PY{n}{H\PYZus{}matrix} \PY{o}{=} \PY{n}{H}\PY{o}{.}\PY{n}{to\PYZus{}matrix}\PY{p}{(}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{H\PYZus{}matrix}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[1.+0.j 0.+0.j 0.+0.j 0.+0.j]
+ [0.+0.j 0.+0.j 1.+0.j 0.+0.j]
+ [0.+0.j 1.+0.j 0.+0.j 0.+0.j]
+ [0.+0.j 0.+0.j 0.+0.j 1.+0.j]]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{61}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qc\PYZus{}grader}\PY{n+nn}{.}\PY{n+nn}{challenges}\PY{n+nn}{.}\PY{n+nn}{qgss\PYZus{}2022} \PY{k+kn}{import} \PY{n}{grade\PYZus{}lab2\PYZus{}ex7}
+
+\PY{n}{grade\PYZus{}lab2\PYZus{}ex7}\PY{p}{(}\PY{n}{H\PYZus{}matrix}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Submitting your answer. Please wait{\ldots}
+Congratulations 🎉! Your answer is correct and has been submitted.
+    \end{Verbatim}
+
+    Next, let's create a quantum circuit for time evolution! We'll
+parametrize the time \texttt{t} with a Qiskit \texttt{Parameter} and
+exponentiate the Heisenberg Hamiltonian with the Qiskit Opflow method
+\texttt{exp\_i()} which implements the corressponding time-evolution
+operator \(e^{-i \hat{H} t}\)
+
+\hypertarget{define-the-time-evolution-operator-for-the-heisenberg-hamiltonian-hath-and-the-time-step-t}{%
+\subsubsection{\texorpdfstring{4.) Define the time evolution operator
+for the Heisenberg Hamiltonian \(\hat{H}\) and the time step
+\(t\)}{4.) Define the time evolution operator for the Heisenberg Hamiltonian \textbackslash hat\{H\} and the time step t}}\label{define-the-time-evolution-operator-for-the-heisenberg-hamiltonian-hath-and-the-time-step-t}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{62}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Define a parameter t for the time in the time evolution operator}
+\PY{n}{t} \PY{o}{=} \PY{n}{Parameter}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Follow the instructions above to define a time\PYZhy{}evolution operator}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}INSERT CODE BELOW THIS LINE}
+\PY{n}{time\PYZus{}evolution\PYZus{}operator} \PY{o}{=} \PY{p}{(}\PY{n}{H}\PY{o}{*}\PY{n}{t}\PY{p}{)}\PY{o}{.}\PY{n}{exp\PYZus{}i}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}DO NOT EDIT BELOW THIS LINE}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{time\PYZus{}evolution\PYZus{}operator}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+e\^{}(-i*1.0*t * (
+  0.5 * II
+  + 0.5 * XX
+  + 0.5 * YY
+  + 0.5 * ZZ
+))
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{63}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qc\PYZus{}grader}\PY{n+nn}{.}\PY{n+nn}{challenges}\PY{n+nn}{.}\PY{n+nn}{qgss\PYZus{}2022} \PY{k+kn}{import} \PY{n}{grade\PYZus{}lab2\PYZus{}ex8}
+
+\PY{n}{grade\PYZus{}lab2\PYZus{}ex8}\PY{p}{(}\PY{n}{time\PYZus{}evolution\PYZus{}operator}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Submitting your answer. Please wait{\ldots}
+Congratulations 🎉! Your answer is correct and has been submitted.
+    \end{Verbatim}
+
+    We can then generate a circuit which implements the necessary operations
+that compute the time-evolution operator for a given evolution time.
+First, let's try to do this exactly with the \texttt{MatrxEvolution}
+class of Qiskit Opflow.
+
+\hypertarget{use-matrixevolution-to-calculate-the-exact-exponentiation-at-time-t}{%
+\subsubsection{\texorpdfstring{5.) Use \texttt{MatrixEvolution} to
+calculate the exact exponentiation at time
+\(t\)}{5.) Use MatrixEvolution to calculate the exact exponentiation at time t}}\label{use-matrixevolution-to-calculate-the-exact-exponentiation-at-time-t}}
+
+*Hint: First you'll need to instantiate a \texttt{MatrixEvolution()}
+object. This object has a method called \texttt{convert(operator)} which
+takes a time-evolution operator and generates a quantum circuit
+implementing the operation. Finally, you'll need to bind the value of
+the evolution time to the circuit.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{64}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Set a total time for the time evolution}
+\PY{n}{evolution\PYZus{}time} \PY{o}{=} \PY{l+m+mf}{0.5}
+
+\PY{c+c1}{\PYZsh{} Instantiate a MatrixEvolution() object to convert the time evolution operator}
+\PY{c+c1}{\PYZsh{}  and bind the value for the time parameter}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}INSERT CODE BELOW THIS LINE}
+
+\PY{n}{me} \PY{o}{=} \PY{n}{MatrixEvolution}\PY{p}{(}\PY{p}{)}
+\PY{n}{bound\PYZus{}matrix\PYZus{}exponentiation\PYZus{}circuit} \PY{o}{=} \PY{n}{me}\PY{o}{.}\PY{n}{convert}\PY{p}{(}\PY{n}{time\PYZus{}evolution\PYZus{}operator}\PY{p}{)}\PY{o}{.}\PY{n}{assign\PYZus{}parameters}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{t}\PY{p}{:}\PY{n}{evolution\PYZus{}time}\PY{p}{\PYZcb{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}DO NOT EDIT BELOW THIS LINE}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{bound\PYZus{}matrix\PYZus{}exponentiation\PYZus{}circuit}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Evolved Hamiltonian is not composed of only MatrixOps, converting to Matrix
+representation, which can be expensive.
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+     ┌──────────────┐
+q\_0: ┤0             ├
+     │  Hamiltonian │
+q\_1: ┤1             ├
+     └──────────────┘
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{65}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qc\PYZus{}grader}\PY{n+nn}{.}\PY{n+nn}{challenges}\PY{n+nn}{.}\PY{n+nn}{qgss\PYZus{}2022} \PY{k+kn}{import} \PY{n}{grade\PYZus{}lab2\PYZus{}ex9}
+
+\PY{n}{grade\PYZus{}lab2\PYZus{}ex9}\PY{p}{(}\PY{n}{bound\PYZus{}matrix\PYZus{}exponentiation\PYZus{}circuit}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Submitting your answer. Please wait{\ldots}
+Congratulations 🎉! Your answer is correct and has been submitted.
+    \end{Verbatim}
+
+    As a last step, let us also generate the circuit corresponding to the
+time-evolution operator calculated using the Trotter-Suzuki
+decomposition. For this we'll use the \texttt{PauliTrotterEvolution}
+class in the same way we've used the \texttt{MatrixEvolution()} one.
+
+\hypertarget{use-paulitrotterevolution-to-calculate-the-approximate-exponentiation-for-a-small-time-step}{%
+\subsubsection{\texorpdfstring{6.) Use \texttt{PauliTrotterEvolution} to
+calculate the approximate exponentiation for a small time
+step}{6.) Use PauliTrotterEvolution to calculate the approximate exponentiation for a small time step}}\label{use-paulitrotterevolution-to-calculate-the-approximate-exponentiation-for-a-small-time-step}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{66}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Define a value for the duration of the time\PYZhy{}step}
+\PY{n}{time\PYZus{}step\PYZus{}value} \PY{o}{=} \PY{l+m+mf}{0.1}
+
+\PY{c+c1}{\PYZsh{} Instantiate a PauliTrotterEvolution() object and convert the time\PYZhy{}evolution operator}
+\PY{c+c1}{\PYZsh{} to then bind the value of the time step}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}INSERT CODE BELOW THIS LINE}
+
+\PY{n}{bound\PYZus{}trotter\PYZus{}exponentiation\PYZus{}circuit} \PY{o}{=} \PY{n}{PauliTrotterEvolution}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{convert}\PY{p}{(}\PY{n}{time\PYZus{}evolution\PYZus{}operator}\PY{p}{)}\PY{o}{.}\PY{n}{assign\PYZus{}parameters}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{t}\PY{p}{:}\PY{n}{time\PYZus{}step\PYZus{}value}\PY{p}{\PYZcb{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}DO NOT EDIT BELOW THIS LINE}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{bound\PYZus{}trotter\PYZus{}exponentiation\PYZus{}circuit}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+     ┌────────────────────────────────────┐
+q\_0: ┤0                                   ├
+     │  exp(-it (II + XX + YY + ZZ))(0.1) │
+q\_1: ┤1                                   ├
+     └────────────────────────────────────┘
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{67}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qc\PYZus{}grader}\PY{n+nn}{.}\PY{n+nn}{challenges}\PY{n+nn}{.}\PY{n+nn}{qgss\PYZus{}2022} \PY{k+kn}{import} \PY{n}{grade\PYZus{}lab2\PYZus{}ex10}
+
+\PY{n}{grade\PYZus{}lab2\PYZus{}ex10}\PY{p}{(}\PY{n}{bound\PYZus{}trotter\PYZus{}exponentiation\PYZus{}circuit}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Submitting your answer. Please wait{\ldots}
+Congratulations 🎉! Your answer is correct and has been submitted.
+    \end{Verbatim}
+
+    The full evolution can then be obtained by putting together several
+Trotter steps up to the desired evolution time. For each Trotter step
+you can compose the single-step Trotter using the \texttt{@} operator.
+
+\hypertarget{concatenate-several-trotter-steps-to-generate-the-desired-evolution}{%
+\subsubsection{7.) Concatenate several Trotter steps to generate the
+desired
+evolution}\label{concatenate-several-trotter-steps-to-generate-the-desired-evolution}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{68}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Define the number of steps needed to reach the previously set total time\PYZhy{}evolution}
+\PY{n}{steps} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{evolution\PYZus{}time}\PY{o}{/}\PY{n}{time\PYZus{}step\PYZus{}value}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Compose the operator for a Trotter step several times to generate the }
+\PY{c+c1}{\PYZsh{} operator for the full time\PYZhy{}evolution}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}INSERT CODE BELOW THIS LINE}
+
+\PY{n}{total\PYZus{}time\PYZus{}evolution\PYZus{}circuit} \PY{o}{=} \PY{n}{PauliTrotterEvolution}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{convert}\PY{p}{(}\PY{n}{time\PYZus{}evolution\PYZus{}operator}\PY{p}{)}\PY{o}{.}\PY{n}{assign\PYZus{}parameters}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{t}\PY{p}{:}\PY{n}{time\PYZus{}step\PYZus{}value}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{to\PYZus{}circuit\PYZus{}op}\PY{p}{(}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{a} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{steps}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+     
+    \PY{n}{total\PYZus{}time\PYZus{}evolution\PYZus{}circuit} \PY{o}{=} \PY{n}{total\PYZus{}time\PYZus{}evolution\PYZus{}circuit} \PY{o}{@} \PY{n}{PauliTrotterEvolution}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{convert}\PY{p}{(}\PY{n}{time\PYZus{}evolution\PYZus{}operator}\PY{p}{)}\PY{o}{.}\PY{n}{assign\PYZus{}parameters}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{t}\PY{p}{:}\PY{n}{time\PYZus{}step\PYZus{}value}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{to\PYZus{}circuit\PYZus{}op}\PY{p}{(}\PY{p}{)}
+    
+
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}DO NOT EDIT BELOW THIS LINE}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{total\PYZus{}time\PYZus{}evolution\PYZus{}circuit}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+     ┌────────────────────────────────────┐»
+q\_0: ┤0                                   ├»
+     │  exp(-it (II + XX + YY + ZZ))(0.1) │»
+q\_1: ┤1                                   ├»
+     └────────────────────────────────────┘»
+«     ┌────────────────────────────────────┐»
+«q\_0: ┤0                                   ├»
+«     │  exp(-it (II + XX + YY + ZZ))(0.1) │»
+«q\_1: ┤1                                   ├»
+«     └────────────────────────────────────┘»
+«     ┌────────────────────────────────────┐»
+«q\_0: ┤0                                   ├»
+«     │  exp(-it (II + XX + YY + ZZ))(0.1) │»
+«q\_1: ┤1                                   ├»
+«     └────────────────────────────────────┘»
+«     ┌────────────────────────────────────┐»
+«q\_0: ┤0                                   ├»
+«     │  exp(-it (II + XX + YY + ZZ))(0.1) │»
+«q\_1: ┤1                                   ├»
+«     └────────────────────────────────────┘»
+«     ┌────────────────────────────────────┐
+«q\_0: ┤0                                   ├
+«     │  exp(-it (II + XX + YY + ZZ))(0.1) │
+«q\_1: ┤1                                   ├
+«     └────────────────────────────────────┘
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{69}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qc\PYZus{}grader}\PY{n+nn}{.}\PY{n+nn}{challenges}\PY{n+nn}{.}\PY{n+nn}{qgss\PYZus{}2022} \PY{k+kn}{import} \PY{n}{grade\PYZus{}lab2\PYZus{}ex11}
+
+\PY{n}{grade\PYZus{}lab2\PYZus{}ex11}\PY{p}{(}\PY{n}{total\PYZus{}time\PYZus{}evolution\PYZus{}circuit}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Submitting your answer. Please wait{\ldots}
+Congratulations 🎉! Your answer is correct and has been submitted.
+    \end{Verbatim}
+
+    Consider now a system of three qubits initially in the
+\(\vert 001 \rangle\) state, whose evolution is determined by the tight
+binding Hamiltonian
+
+\[\hat{H} = \sum_{i=0}^{1} \hat{\sigma}_x^{(i)} \hat{\sigma}_x^{(i+1)}  + \sum_{i=0}^{1} \hat{\sigma}_y^{(i)} \hat{\sigma}_y^{(i+1)} \]
+
+Determine the final state at time \(t=2\) by evolving the initial state
+with the time-evolution operator generated by the tight binding
+Hamiltonian. You can proceed in a similar way as the previous exercises,
+be careful to compose the circuit for the state preparation and for the
+time evolution correctly. Note that you should define the Hamiltonian
+operator exactly as the definition above to get the right aswer for the
+grader.
+
+\hypertarget{construct-the-circuit-for-preparing-an-initial-state-and-evolving-it-under-the-tight-binding-hamiltonian}{%
+\subsubsection{8.) Construct the circuit for preparing an initial state
+and evolving it under the tight binding
+Hamiltonian}\label{construct-the-circuit-for-preparing-an-initial-state-and-evolving-it-under-the-tight-binding-hamiltonian}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{70}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Set number of qubits}
+\PY{n}{num\PYZus{}qubits} \PY{o}{=} \PY{l+m+mi}{3}
+\PY{c+c1}{\PYZsh{} Define time parameter}
+\PY{n}{t} \PY{o}{=} \PY{n}{Parameter}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Set total evolution time}
+\PY{n}{evolution\PYZus{}time\PYZus{}t} \PY{o}{=} \PY{l+m+mi}{2}
+\PY{c+c1}{\PYZsh{} Set size of time\PYZhy{}step for Trotter evolution}
+\PY{n}{time\PYZus{}step\PYZus{}value\PYZus{}t} \PY{o}{=} \PY{l+m+mf}{0.1}
+\PY{c+c1}{\PYZsh{} Define the number of steps}
+\PY{n}{steps\PYZus{}t} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{evolution\PYZus{}time\PYZus{}t}\PY{o}{/}\PY{n}{time\PYZus{}step\PYZus{}value\PYZus{}t}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Create circuit}
+\PY{n}{tight\PYZus{}binding\PYZus{}circuit} \PY{o}{=} \PY{n}{QuantumCircuit}\PY{p}{(}\PY{n}{num\PYZus{}qubits}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Add initial state preparation}
+\PY{n}{tight\PYZus{}binding\PYZus{}circuit}\PY{o}{.}\PY{n}{x}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+
+\PY{n}{full\PYZus{}time\PYZus{}evolution\PYZus{}circuit} \PY{o}{=} \PY{n}{tight\PYZus{}binding\PYZus{}circuit}
+
+\PY{c+c1}{\PYZsh{} Define the Hamiltonian, the time\PYZhy{}evolution operator, the Trotter step and the total evolution}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}INSERT CODE BELOW THIS LINE}
+
+\PY{n}{H1} \PY{o}{=} \PY{p}{(}\PY{n}{I}\PY{o}{\PYZca{}}\PY{n}{X}\PY{o}{\PYZca{}}\PY{n}{X}\PY{p}{)} \PY{o}{+} \PY{p}{(}\PY{n}{X}\PY{o}{\PYZca{}}\PY{n}{X}\PY{o}{\PYZca{}}\PY{n}{I}\PY{p}{)} \PY{o}{+} \PY{p}{(}\PY{n}{I}\PY{o}{\PYZca{}}\PY{n}{Y}\PY{o}{\PYZca{}}\PY{n}{Y}\PY{p}{)} \PY{o}{+} \PY{p}{(}\PY{n}{Y}\PY{o}{\PYZca{}}\PY{n}{Y}\PY{o}{\PYZca{}}\PY{n}{I}\PY{p}{)}
+
+\PY{n}{time\PYZus{}evolution\PYZus{}operator1} \PY{o}{=} \PY{p}{(}\PY{n}{H1}\PY{o}{*}\PY{n}{t}\PY{p}{)}\PY{o}{.}\PY{n}{exp\PYZus{}i}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{full\PYZus{}time\PYZus{}evolution\PYZus{}circuit1} \PY{o}{=} \PY{n}{PauliTrotterEvolution}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{convert}\PY{p}{(}\PY{n}{time\PYZus{}evolution\PYZus{}operator1}\PY{p}{)}\PY{o}{.}\PY{n}{assign\PYZus{}parameters}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{t}\PY{p}{:}\PY{n}{time\PYZus{}step\PYZus{}value\PYZus{}t}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{to\PYZus{}circuit}\PY{p}{(}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{a} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{steps\PYZus{}t}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+     
+    \PY{n}{full\PYZus{}time\PYZus{}evolution\PYZus{}circuit1} \PY{o}{=} \PY{n}{full\PYZus{}time\PYZus{}evolution\PYZus{}circuit1} \PY{o}{+} \PY{n}{PauliTrotterEvolution}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{convert}\PY{p}{(}\PY{n}{time\PYZus{}evolution\PYZus{}operator1}\PY{p}{)}\PY{o}{.}\PY{n}{assign\PYZus{}parameters}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{t}\PY{p}{:}\PY{n}{time\PYZus{}step\PYZus{}value\PYZus{}t}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{to\PYZus{}circuit}\PY{p}{(}\PY{p}{)}
+    
+
+\PY{n}{full\PYZus{}time\PYZus{}evolution\PYZus{}circuit} \PY{o}{=} \PY{n}{full\PYZus{}time\PYZus{}evolution\PYZus{}circuit} \PY{o}{+} \PY{n}{full\PYZus{}time\PYZus{}evolution\PYZus{}circuit1}
+    
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}DO NOT EDIT BELOW THIS LINE}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{full\PYZus{}time\PYZus{}evolution\PYZus{}circuit}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+     ┌───┐┌────────────────────────────────────────┐»
+q\_0: ┤ X ├┤0                                       ├»
+     └───┘│                                        │»
+q\_1: ─────┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+          │                                        │»
+q\_2: ─────┤2                                       ├»
+          └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐»
+«q\_0: ┤0                                       ├»
+«     │                                        │»
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├»
+«     │                                        │»
+«q\_2: ┤2                                       ├»
+«     └────────────────────────────────────────┘»
+«     ┌────────────────────────────────────────┐
+«q\_0: ┤0                                       ├
+«     │                                        │
+«q\_1: ┤1 exp(-it (IXX + XXI + IYY + YYI))(0.1) ├
+«     │                                        │
+«q\_2: ┤2                                       ├
+«     └────────────────────────────────────────┘
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{71}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qc\PYZus{}grader}\PY{n+nn}{.}\PY{n+nn}{challenges}\PY{n+nn}{.}\PY{n+nn}{qgss\PYZus{}2022} \PY{k+kn}{import} \PY{n}{grade\PYZus{}lab2\PYZus{}ex12}
+
+\PY{n}{grade\PYZus{}lab2\PYZus{}ex12}\PY{p}{(}\PY{n}{full\PYZus{}time\PYZus{}evolution\PYZus{}circuit}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Submitting your answer. Please wait{\ldots}
+Congratulations 🎉! Your answer is correct and has been submitted.
+    \end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
